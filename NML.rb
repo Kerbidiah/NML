@@ -1,7 +1,8 @@
 class EMType
-	#					   inclusive bounds
-	def initialize(name, abrv, lowerNM, upperNM)
+	#									inclusive bounds
+	def initialize(name, div, abrv, lowerNM, upperNM)
 		@name = name
+		@div = div
 		@abrv = abrv
 		@lo = lowerNM
 		@hi = upperNM
