@@ -8,6 +8,7 @@ class EMType
 			@fullAbrv = fullAbrv
 		end
 		@abrvFormal = abrvFormal
+		@abrvInformal = abrvFormal
 		@lo = lowerNM.to_f
 		@hi = upperNM.to_f
 	end
@@ -17,6 +18,9 @@ class EMType
 		elsif !(@lo <= nm and nm <= @hi)
 			return false
 		end
+	end
+	def addInfAbv(abrvInformal)
+		@abrvInformal = abrvInformal
 	end
 end
 
@@ -43,3 +47,8 @@ spectrum.append EMType.new("radio", "VLF", 10**13, 10**14)
 spectrum.append EMType.new("radio", "ULF", 10**14, 10**15)
 spectrum.append EMType.new("radio", "SLF", 10**15, 10**16)
 spectrum.append EMType.new("radio", "ELF", 10**16, 10**17)
+i = 0
+while i <= spectrum.length
+	puts spectrum[i]
+	i += 1
+end
