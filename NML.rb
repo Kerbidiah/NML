@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 class EMType
 	#									inclusive bounds
 	def initialize(name, fullAbrv = "", abrvFormal, lowerNM, upperNM)
