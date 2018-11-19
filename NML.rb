@@ -9,6 +9,8 @@ class EMType
 		@abrvFormal = abrvFormal unless abrvFormal == ""
 		@lo = lowerNM.to_f
 		@hi = upperNM.to_f
+		@loSI = [@lo, "nm"]
+		@hiSI = [@hi, "nm"]
 	end
 	def cover(nm)
 		if @lo <= nm and nm <= @hi
@@ -17,15 +19,48 @@ class EMType
 			return false
 		end
 	end
-	def addInfAbv(abrvInformal)
-		@abrvInformal = abrvInformal
+	def display
+		self.si
+
+		puts @name
+		puts @abrvFormal
+		puts "#{@loSI[0]} #{@loSI[1]} - #{@hiSI[0]} #{@hiSI[1]}"
+	end
+	def si
+		if @loSI[1] == "nm"
+			case
+			when @lo < 1
+				@loSI = [@lo/(10**-3), "pm"]
+			when 10**3 <= @lo && @lo < 10**6
+				@loSI = [@lo/(10**3), "µm"]
+			when 10**6 <= @lo && @lo < 10**9
+				@loSI = [@lo/(10**6), "mm"]
+			when 10**9 <= @lo && @lo < 10**12
+				@loSI = [@lo/(10**9), "km"]
+			end
+
+			case
+			when @hi < 1
+				@hiSI = [@hi/(10**-3), "pm"]
+			when 10**3 <= @hi && @hi < 10**6
+				@hiSI = [@hi/(10**3), "µm"]
+			when 10**6 <= @hi && @hi < 10**9
+				@hiSI = [@hi/(10**6), "mm"]
+			when 10**9 <= @hi && @hi < 10**12
+				@hiSI = [@hi/(10**9), "km"]
+			end
+		end
 	end
 end
-def includes(nm)
-	i = 0
-	while i <= (self.length - 1)
-		put self[i].inspect if self[i].cover(nm)
-		i += 1
+class Array
+	def includes(nm)
+		i = 0
+		kind = Array.new
+		while i <= (self.length - 1)
+			kind.append self[i] if self[i].cover(nm)
+			i += 1
+		end
+		return kind
 	end
 end
 
@@ -54,10 +89,16 @@ spectrum.append EMType.new("radio", "SLF", 10**15, 10**16)
 spectrum.append EMType.new("radio", "ELF", 10**16, 10**17)
 i = 0
 while i <= (spectrum.length - 1)
+	#spectrum[i].hz
 	puts spectrum[i].inspect
 	i += 1
 end
 
 loop do
-	spectrum.include(gets.to_f)
+	type = spectrum.includes(gets.to_f)
+	i = 0
+	while i <= (type.length - 1)
+		type[i].display
+		i += 1
+	end
 end
